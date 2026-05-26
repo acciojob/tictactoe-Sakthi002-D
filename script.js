@@ -1,6 +1,7 @@
 let player1 = "";
 let player2 = "";
 let currentPlayer = "x";
+let gameOver = false;
 
 const submitBtn = document.getElementById("submit");
 const message = document.querySelector(".message");
@@ -18,22 +19,41 @@ cells.forEach((cell) => {
 
     cell.addEventListener("click", () => {
 
-        // already filled na stop
+        // game over na click panna kudathu
+        if (gameOver) {
+            return;
+        }
+
+        // already filled cell na stop
         if (cell.innerText !== "") {
             return;
         }
 
-        // x or o place pannum
+        // x or o set
         cell.innerText = currentPlayer;
 
         // winner check
-        checkWinner();
+        if (checkWinner()) {
 
-        // turn change
+            gameOver = true;
+
+            if (currentPlayer === "x") {
+                message.innerText = `Player1 congratulations you won!`;
+            } else {
+                message.innerText = `Player2 congratulations you won!`;
+            }
+
+            return;
+        }
+
+        // player switch
         if (currentPlayer === "x") {
+
             currentPlayer = "o";
             message.innerText = `${player2}, you're up`;
+
         } else {
+
             currentPlayer = "x";
             message.innerText = `${player1}, you're up`;
         }
@@ -55,17 +75,18 @@ function checkWinner() {
         [2,4,6]
     ];
 
-    for (let pattern of winPatterns) {
+    for (let i = 0; i < winPatterns.length; i++) {
+
+        let pattern = winPatterns[i];
 
         let a = cells[pattern[0]].innerText;
         let b = cells[pattern[1]].innerText;
         let c = cells[pattern[2]].innerText;
 
         if (a !== "" && a === b && b === c) {
-
-            let winner = a === "x" ? player1 : player2;
-
-            message.innerText = `${winner} congratulations you won!`;
+            return true;
         }
     }
+
+    return false;
 }
