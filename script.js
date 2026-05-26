@@ -3,7 +3,6 @@ let player2 = "";
 let currentPlayer = "x";
 
 const submitBtn = document.getElementById("submit");
-const board = document.getElementById("board");
 const message = document.querySelector(".message");
 const cells = document.querySelectorAll(".cell");
 
@@ -19,19 +18,23 @@ cells.forEach((cell) => {
 
     cell.addEventListener("click", () => {
 
+        // already filled na stop
         if (cell.innerText !== "") {
             return;
         }
 
+        // x or o place pannum
         cell.innerText = currentPlayer;
 
+        // winner check
         checkWinner();
 
-        if (currentPlayer === "X") {
-            currentPlayer = "O";
+        // turn change
+        if (currentPlayer === "x") {
+            currentPlayer = "o";
             message.innerText = `${player2}, you're up`;
         } else {
-            currentPlayer = "X";
+            currentPlayer = "x";
             message.innerText = `${player1}, you're up`;
         }
 
@@ -60,9 +63,9 @@ function checkWinner() {
 
         if (a !== "" && a === b && b === c) {
 
-            let winner = a === "X" ? player1 : player2;
+            let winner = a === "x" ? player1 : player2;
 
-            message.innerText = `${winner}, congratulations you won!`;
+            message.innerText = `${winner} congratulations you won!`;
         }
     }
 }
